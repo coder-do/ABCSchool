@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Wrappers
+namespace ABCSharedLibrary.Wrappers
 {
     public interface IResponseWrapper
     {

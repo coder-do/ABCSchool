@@ -56,14 +56,15 @@ namespace Infra.Contexts.Seeders
             {
                 incomingUser = new ApplicationUser
                 {
-                    FirstName = TenancyConstants.FirstName,
-                    LastName = TenancyConstants.LastName,
+                    FirstName = _tenantContextAccessor.MultiTenantContext.TenantInfo.FirstName,
+                    LastName = _tenantContextAccessor.MultiTenantContext.TenantInfo.LastName,
                     Email = email,
                     UserName = email,
                     EmailConfirmed = true,
                     PhoneNumberConfirmed = true,
                     NormalizedEmail = email.ToUpperInvariant(),
                     NormalizedUserName = email.ToUpperInvariant(),
+                    IsActive = true,
                 };
 
                 var password = new PasswordHasher<ApplicationUser>();

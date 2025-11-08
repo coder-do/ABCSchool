@@ -41,7 +41,7 @@ namespace Infra.Tenancy
                     TenantInfo = tenant,
                 };
 
-            await _serviceProvider.GetRequiredService<ApplicationDBSeeder>()
+            await scope.ServiceProvider.GetRequiredService<ApplicationDBSeeder>()
                 .InitializeDatabaseAsync(ct);
         }
 

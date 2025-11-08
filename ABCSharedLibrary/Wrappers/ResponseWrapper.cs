@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Application.Wrappers
+﻿namespace ABCSharedLibrary.Wrappers
 {
     public class ResponseWrapper : IResponseWrapper
     {
@@ -54,7 +48,7 @@ namespace Application.Wrappers
             return Task.FromResult(Fail(messages));
         }
 
-        public static IResponseWrapper Success ()
+        public static IResponseWrapper Success()
         {
             return new ResponseWrapper()
             {
@@ -111,9 +105,19 @@ namespace Application.Wrappers
             return new ResponseWrapper<T> { IsSuccessful = false, Messages = [message] };
         }
 
-        public new static ResponseWrapper<T> Fail(List<string> messages)
+        public new static ResponseWrapper<T> Fail(T data)
         {
-            return new ResponseWrapper<T> { IsSuccessful = false, Messages = messages };
+            return new ResponseWrapper<T> { IsSuccessful = false, Data = data };
+        }
+
+        public new static ResponseWrapper<T> Fail(T data, string message)
+        {
+            return new ResponseWrapper<T> { IsSuccessful = false, Data = data, Messages = [message] };
+        }
+
+        public new static ResponseWrapper<T> Fail(T data, List<string> messages)
+        {
+            return new ResponseWrapper<T> { IsSuccessful = false, Data = data, Messages = messages };
         }
 
         public new static Task<ResponseWrapper<T>> FailAsync()
@@ -126,9 +130,19 @@ namespace Application.Wrappers
             return Task.FromResult(Fail(message));
         }
 
-        public new static Task<ResponseWrapper<T>> FailAsync(List<string> messages)
+        public new static Task<ResponseWrapper<T>> FailAsync(T data)
         {
-            return Task.FromResult(Fail(messages));
+            return Task.FromResult(Fail(data));
+        }
+
+        public new static Task<ResponseWrapper<T>> FailAsync(T data, string message)
+        {
+            return Task.FromResult(Fail(data, message));
+        }
+
+        public new static Task<ResponseWrapper<T>> FailAsync(T data, List<string> messages)
+        {
+            return Task.FromResult(Fail(data, messages));
         }
 
         public new static ResponseWrapper<T> Success()
@@ -141,6 +155,21 @@ namespace Application.Wrappers
             return new ResponseWrapper<T> { IsSuccessful = true, Messages = [message] };
         }
 
+        public new static ResponseWrapper<T> Success(T data)
+        {
+            return new ResponseWrapper<T> { IsSuccessful = true, Data = data };
+        }
+
+        public new static ResponseWrapper<T> Success(T data, string message)
+        {
+            return new ResponseWrapper<T> { IsSuccessful = true, Data = data, Messages = [message] };
+        }
+
+        public new static ResponseWrapper<T> Success(T data, List<string> messages)
+        {
+            return new ResponseWrapper<T> { IsSuccessful = true, Data = data, Messages = messages };
+        }
+
         public new static ResponseWrapper<T> Success(List<string> messages)
         {
             return new ResponseWrapper<T> { IsSuccessful = true, Messages = messages };
@@ -151,14 +180,25 @@ namespace Application.Wrappers
             return Task.FromResult(Success());
         }
 
+
         public new static Task<ResponseWrapper<T>> SuccessAsync(string message)
         {
             return Task.FromResult(Success(message));
         }
 
-        public new static Task<ResponseWrapper<T>> SuccessAsync(List<string> messages)
+        public new static Task<ResponseWrapper<T>> SuccessAsync(T data)
         {
-            return Task.FromResult(Success(messages));
+            return Task.FromResult(Success(data));
+        }
+
+        public new static Task<ResponseWrapper<T>> SuccessAsync(T data, string message)
+        {
+            return Task.FromResult(Success(data, message));
+        }
+
+        public new static Task<ResponseWrapper<T>> SuccessAsync(T data, List<string> messages)
+        {
+            return Task.FromResult(Success(data, messages));
         }
     }
 }

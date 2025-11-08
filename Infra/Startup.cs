@@ -1,14 +1,20 @@
 ﻿using Application;
+using Application.Features.Identity.Roles;
 using Application.Features.Identity.Tokens;
+using Application.Features.Identity.Users;
+using Application.Features.Schools;
+using Application.Features.Tenancy;
 using Application.Wrappers;
 using Finbuckle.MultiTenant;
 using Infra.Constants;
 using Infra.Contexts;
 using Infra.Contexts.Seeders;
+using Infra.Identity;
 using Infra.Identity.Auth;
 using Infra.Identity.Models;
 using Infra.Identity.Tokens;
 using Infra.OpenApi;
+using Infra.Schools;
 using Infra.Tenancy;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -45,7 +51,9 @@ namespace Infra
                 .AddDbContext<ApplicationDBContext>(opt => opt
                     .UseSqlServer(configuration.GetConnectionString("DBConnection")))
                 .AddTransient<ITenantDBSeeder, TenantDbSeeder>()
+                .AddTransient<ISchoolService, SchoolService>()
                 .AddTransient<ApplicationDBSeeder>()
+                .AddTransient<ITenantService, TenantService>()
                 .AddIdentityServices()
                 .AddPermissions()
                 .OpenApiDocumentation(configuration);
@@ -74,7 +82,11 @@ namespace Infra
                 .AddEntityFrameworkStores<ApplicationDBContext>()
                 .AddDefaultTokenProviders()
                 .Services
-                .AddScoped<ITokenService, TokenService>();
+                .AddScoped<ITokenService, TokenService>()
+                .AddScoped<IRoleService, RoleService>()
+                .AddScoped<IUserService, UserService>()
+                .AddScoped<ICurrentUserService, CurrentUserService>()
+                .AddScoped<CurrentUserMiddleware>();
         }
 
         internal static IServiceCollection AddPermissions(this IServiceCollection services)
@@ -123,18 +135,28 @@ namespace Infra
                         {
                             if (context.Exception is SecurityTokenExpiredException)
                             {
-                                context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                                context.Response.ContentType = "application/json";
+                                if (!context.Response.HasStarted)
+                                {
+                                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                                    context.Response.ContentType = "application/json";
 
-                                var result = JsonConvert.SerializeObject(ResponseWrapper.Fail("Token has expired"));
-                                return context.Response.WriteAsync(result);
+                                    var result = JsonConvert.SerializeObject(ResponseWrapper.Fail("Token has expired"));
+                                    return context.Response.WriteAsync(result);
+                                }
+
+                                return Task.CompletedTask;
                             } else
                             {
-                                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                                context.Response.ContentType = "application/json";
+                                if (!context.Response.HasStarted)
+                                {
+                                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                                    context.Response.ContentType = "application/json";
 
-                                var result = JsonConvert.SerializeObject(ResponseWrapper.Fail("InternalServerError in OnAuthenticationFailed"));
-                                return context.Response.WriteAsync(result);
+                                    var result = JsonConvert.SerializeObject(ResponseWrapper.Fail("InternalServerError in OnAuthenticationFailed"));
+                                    return context.Response.WriteAsync(result);
+                                }
+
+                                return Task.CompletedTask;
                             }
                         },
                         OnChallenge = context =>
@@ -154,11 +176,16 @@ namespace Infra
                         },
                         OnForbidden = context =>
                         {
-                            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                            context.Response.ContentType = "application/json";
+                            if (!context.Response.HasStarted)
+                            {
+                                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                                context.Response.ContentType = "application/json";
 
-                            var result = JsonConvert.SerializeObject(ResponseWrapper.Fail("You are not authorized to access to this resource"));
-                            return context.Response.WriteAsync(result);
+                                var result = JsonConvert.SerializeObject(ResponseWrapper.Fail("You are not authorized to access to this resource"));
+                                return context.Response.WriteAsync(result);
+                            }
+
+                            return Task.CompletedTask;
                         }
                     };
                 });
@@ -230,6 +257,7 @@ namespace Infra
         {
             return app
                 .UseAuthentication()
+                .UseMiddleware<CurrentUserMiddleware>()
                 .UseMultiTenant()
                 .UseAuthorization()
                 .UseOpenApiDocumentation();
@@ -241,7 +269,7 @@ namespace Infra
             app.UseSwaggerUi(o =>
             {
                o.DefaultModelExpandDepth = 0;
-               o.DocExpansion = "none";
+               o.DocExpansion = "list";
                o.TagsSorter = "alpha";
             });
 

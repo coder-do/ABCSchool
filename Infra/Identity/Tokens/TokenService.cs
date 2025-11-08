@@ -50,14 +50,14 @@ namespace Infra.Identity.Tokens
                 throw new UnAuthorizedException(["Incorrect username or password"]);
             }
 
-            if (userInDb.IsActive)
+            if (!userInDb.IsActive)
             {
                 throw new UnAuthorizedException(["This user is not active"]);
             }
 
             if (_multiTenantContextAccessor.MultiTenantContext.TenantInfo.Id is not TenancyConstants.Root.Id)
             {
-                if (_multiTenantContextAccessor.MultiTenantContext.TenantInfo.ValidUpTo < DateTime.UtcNow) { }
+                if (_multiTenantContextAccessor.MultiTenantContext.TenantInfo.ValidUpTo < DateTime.UtcNow)
                 {
                     throw new UnAuthorizedException(["Tenant subscription is expired"]);
                 }
@@ -84,22 +84,23 @@ namespace Infra.Identity.Tokens
 
         private ClaimsPrincipal GetClaimsPrincipalFromExpiringToken(string expiringToken)
         {
-            var tknValidationParams = new TokenValidationParameters
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var validationParams = new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSetings.Secret)),
                 ValidateIssuer = false,
                 ValidateAudience = false,
+                ValidateLifetime = true, // Allow expired token for refresh
                 ClockSkew = TimeSpan.Zero,
-                RoleClaimType = ClaimTypes.Role,
-                ValidateLifetime = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSetings.Secret))
+                RoleClaimType = ClaimTypes.Role
             };
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var principal = tokenHandler.ValidateToken(expiringToken, tknValidationParams, out var token);
+            var principal = tokenHandler.ValidateToken(expiringToken, validationParams, out var validatedToken);
 
-            if (token is not JwtSecurityToken tokenJwt 
-                || tokenJwt.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            if (validatedToken is not JwtSecurityToken jwtToken ||
+                !jwtToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
             {
                 throw new UnAuthorizedException(["Invalid token provided. Failed to generate a new token"]);
             }
@@ -189,7 +190,10 @@ namespace Infra.Identity.Tokens
             using var rnd = RandomNumberGenerator.Create();
             rnd.GetBytes(randomNumber);
 
-            return Convert.ToBase64String(randomNumber);
+            return Convert.ToBase64String(randomNumber)
+                        .TrimEnd('=')
+                        .Replace('+', '-')
+                        .Replace('/', '_');
         }
     }
 }

@@ -1,4 +1,7 @@
 using Infra;
+using Application;
+using WebApi.Middlewares;
+using Microsoft.IdentityModel.Logging;
 
 namespace WebApi
 {
@@ -14,6 +17,10 @@ namespace WebApi
             builder.Services.AddJwtAuthentication(
                 builder.Services.GetJwtSettings(builder.Configuration));
 
+            builder.Services.AddApplicationServices();
+
+            IdentityModelEventSource.ShowPII = true;
+
             var app = builder.Build();
 
             await app.Services.AddDatabaseInitializerAsync();
@@ -21,6 +28,8 @@ namespace WebApi
             app.UseHttpsRedirection();
 
             app.UseInfra();
+
+            app.UseMiddleware<ErrorHandlingMiddlware>();
 
             app.MapControllers();
 

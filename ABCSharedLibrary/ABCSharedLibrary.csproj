@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+	<Title>ABC School Shared Library</Title>
+	<PackageId>ABCSharedLibrary</PackageId>
+	<Authors>Meruzh Kiloyan</Authors>
+	<Company>DDD</Company>
+	<Description>Some description</Description>
+	<SignAssembly>true</SignAssembly>
+	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+	<PackageProjectUrl>https://cloudtoys.com/packages</PackageProjectUrl>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+</Project>
