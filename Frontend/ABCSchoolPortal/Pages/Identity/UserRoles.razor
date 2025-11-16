@@ -1,0 +1,37 @@
+﻿@page "/user-roles/{UserId}"
+@using ABCSharedLibrary.Constants
+
+@attribute [ShouldHavePermission(SchoolAction.Read, SchoolFeature.UserRoles)]
+
+<Header OnReturn="Cancel" Title="@_title" Description="@_description" />
+
+<MudTable Items="_userRoleList"
+          Loading="_isLoading"
+          LoadingProgressColor="Color.Info"
+          Elevation="25">
+    <ToolBarContent>
+        @if (_canUpdateUserRoles)
+        {
+            <MudButton Variant="Variant.Filled"
+                       OnClick="UpdateUserRolesAsync"
+                       Color="Color.Primary">Update User Roles</MudButton>
+        }
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Name</MudTh>
+        <MudTh>Description</MudTh>
+        <MudTh>IsAssigned</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd> @context.Name</MudTd>
+        <MudTd> @context.Description</MudTd>
+        <MudTd>
+            <MudCheckBox @bind-Value="@context.IsAssigned"
+                         Disabled="@(!_canUpdateUserRoles)"
+                         Color="Color.Secondary" />
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager RowsPerPageString="RowsPerPageString" InfoFormat="InfoFormat" />
+    </PagerContent>
+</MudTable>

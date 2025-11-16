@@ -4,6 +4,7 @@ using Application.Features.Identity.Roles;
 using Infra.Constants;
 using Infra.Identity.Auth;
 using Microsoft.AspNetCore.Mvc;
+using ABCSharedLibrary.Models.Requests.Identity;
 
 namespace WebApi.Controllers
 {

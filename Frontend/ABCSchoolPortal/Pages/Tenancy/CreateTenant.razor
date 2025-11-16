@@ -1,0 +1,70 @@
+﻿<MudForm @ref="_form" Model="CreateTenantRequest">
+    <MudDialog>
+        <TitleContent>
+            <MudText>
+                <MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1" />
+                Onboard New Tenant
+            </MudText>
+        </TitleContent>
+        <DialogContent>
+            <MudGrid>
+                <MudItem xs="12" md="6">
+                    <MudTextField @bind-Value="CreateTenantRequest.Identifier"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense"
+                                  Label="Tenant Key" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField @bind-Value="CreateTenantRequest.Name"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense"
+                                  Label="Tenant Name" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField @bind-Value="CreateTenantRequest.FirstName"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense"
+                                  Label="Admin Firstname" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField @bind-Value="CreateTenantRequest.LastName"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense"
+                                  Label="Admin Lastname" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudTextField @bind-Value="CreateTenantRequest.Email"
+                                  Variant="Variant.Outlined"
+                                  Margin="Margin.Dense"
+                                  Label="Admin Email" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudDatePicker Context="PickerContext"
+                                   @bind-Date="ValidUpToPicker"
+                                   Variant="Variant.Outlined"
+                                   Margin="Margin.Dense"
+                                   @ref="_datePicker"
+                                   Label="Subscription Valid Up To" />
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <MudCheckBox @bind-Value="CreateTenantRequest.IsActive"
+                                 Label="Activate Tenant?"
+                                 Size="Size.Medium"
+                                 Color="Color.Primary" />
+                </MudItem>
+                <MudItem xs="12" md="12">
+                    <MudTextField @bind-Value="CreateTenantRequest.ConnectionString"
+                                  Variant="Variant.Outlined"
+                                  Label="Connection String"
+                                  Margin="Margin.Dense"
+                                  Lines="2"
+                                  HelperText="To use shared database, leave this field blank." />
+                </MudItem>
+            </MudGrid>
+        </DialogContent>
+        <DialogActions>
+            <MudButton OnClick="CancelDialog" Variant="Variant.Outlined" Class="mr-auto">Cancel</MudButton>
+            <MudButton OnClick="SaveTenantAsync" Variant="Variant.Outlined" Color="Color.Primary">Save</MudButton>
+        </DialogActions>
+    </MudDialog>
+</MudForm>

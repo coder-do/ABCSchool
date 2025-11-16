@@ -1,14 +1,11 @@
-﻿using Application.Features.Tenancy;
+﻿using ABCSharedLibrary.Models.Requests.Tenancy;
+using ABCSharedLibrary.Models.Responses.Tenancy;
+using Application.Features.Tenancy;
 using Finbuckle.MultiTenant;
 using Finbuckle.MultiTenant.Abstractions;
 using Infra.Contexts.Seeders;
 using Mapster;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infra.Tenancy
 {

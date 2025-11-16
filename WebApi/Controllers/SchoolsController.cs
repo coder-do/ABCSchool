@@ -1,9 +1,9 @@
 ﻿using Application.Features.Schools.Commands;
-using Application.Features.Schools;
 using Infra.Constants;
 using Infra.Identity.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Application.Features.Schools.Queries;
+using ABCSharedLibrary.Models.Requests.School;
 
 namespace WebApi.Controllers
 {

@@ -1,0 +1,59 @@
+﻿@page "/users"
+@using ABCSharedLibrary.Constants
+
+@attribute [ShouldHavePermission(SchoolAction.Read, SchoolFeature.Users)]
+
+<Header OnReturn="Cancel" Title="Users" Description="Manage Users" />
+
+<MudTable Items="_userList"
+          Loading="_isLoading"
+          LoadingProgressColor="Color.Info"
+          Elevation="25">
+    <ToolBarContent>
+        <MudFab StartIcon="@Icons.Material.Filled.Add"
+                OnClick="InvokeUserRegistrationDialog"
+                Size="Size.Small"
+                IconSize="Size.Medium"
+                Class="mr-2" />
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Username</MudTh>
+        <MudTh>Firstname</MudTh>
+        <MudTh>Lastname</MudTh>
+        <MudTh>Phone Number</MudTh>
+        <MudTh>Active</MudTh>
+        <MudTh Style="text-align:right">Actions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="Username"> @context.UserName</MudTd>
+        <MudTd DataLabel="Firstname"> @context.FirstName</MudTd>
+        <MudTd DataLabel="Lastname"> @context.LastName</MudTd>
+        <MudTd DataLabel="Phone Number"> @context.PhoneNumber</MudTd>
+        <MudTd DataLabel="Is Active">
+            <MudCheckBox @bind-Value="@context.IsActive"
+                         ReadOnly
+                         Color="Color.Secondary" />
+        </MudTd>
+        <MudTd Style="text-align:right" DataLabel="Actions">
+            <MudMenu Icon="@Icons.Material.Filled.MoreVert"
+                     Size="Size.Small"
+                     Color="Color.Secondary"
+                     TransformOrigin="Origin.BottomLeft"
+                     AnchorOrigin="Origin.BottomLeft">
+                <MudMenuItem OnClick="(() => GoToRoles(context.Id))">View Roles</MudMenuItem>
+                @if (context.IsActive)
+                {
+                    <MudMenuItem OnClick="(() => ActivateOrDeactivativeAsync(context))">Deactivate</MudMenuItem>
+                }
+                else
+                {
+                    <MudMenuItem OnClick="(() => ActivateOrDeactivativeAsync(context))">Activate</MudMenuItem>
+                }
+
+            </MudMenu>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager RowsPerPageString="RowsPerPageString" InfoFormat="InfoFormat" />
+    </PagerContent>
+</MudTable>

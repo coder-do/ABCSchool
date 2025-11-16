@@ -1,0 +1,61 @@
+﻿@page "/tenants"
+@using ABCSharedLibrary.Constants
+
+@attribute [ShouldHavePermission(SchoolAction.Read, SchoolFeature.Tenants)]
+
+<Header OnReturn="ReturnClicked" Title="Tenants" Description="Manage Tenants" />
+
+<MudTable Items="TenantList"
+          Loading="_isLoading"
+          LoadingProgressColor="Color.Info"
+          Elevation="25">
+    <ToolBarContent>
+        <MudFab StartIcon="@Icons.Material.Filled.Add"
+                OnClick="OnBoardNewTenantAsync"
+                Size="Size.Small"
+                IconSize="Size.Medium"
+                Class="mr-2" />
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Tenant</MudTh>
+        <MudTh>Admin Firstname</MudTh>
+        <MudTh>Admin Lastname</MudTh>
+        <MudTh>Email</MudTh>
+        <MudTh>Expiry Date</MudTh>
+        <MudTh>Active</MudTh>
+        <MudTh Style="text-align:right">Actions</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd> @context.Name</MudTd>
+        <MudTd> @context.FirstName</MudTd>
+        <MudTd> @context.LastName</MudTd>
+        <MudTd> @context.Email</MudTd>
+        <MudTd> @context.ValidUpTo.ToString("dd MMM yyyy")</MudTd>
+        <MudTd>
+            <MudCheckBox @bind-Value="@context.IsActive"
+                         ReadOnly
+                         Color="Color.Secondary" />
+        </MudTd>
+        <MudTd Style="text-align:right">
+            <MudMenu Icon="@Icons.Material.Filled.MoreVert"
+                     Size="Size.Small"
+                     Color="Color.Secondary"
+                     TransformOrigin="Origin.BottomLeft"
+                     AnchorOrigin="Origin.BottomLeft">
+                <MudMenuItem OnClick="@(() => UpgradeSubscriptionAsync(context))">Upgrade</MudMenuItem>
+                @if (context.IsActive)
+                {
+                    <MudMenuItem OnClick="@(() => ActivateOrDeactivativeAsync(context))">Deactivate</MudMenuItem>
+                }
+                else
+                {
+                    <MudMenuItem OnClick="@(() => ActivateOrDeactivativeAsync(context))">Activate</MudMenuItem>
+                }
+
+            </MudMenu>
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager RowsPerPageString="RowsPerPageString" InfoFormat="InfoFormat" />
+    </PagerContent>
+</MudTable>

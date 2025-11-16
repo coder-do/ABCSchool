@@ -1,5 +1,6 @@
-﻿using Application.Pipelines;
-using Application.Wrappers;
+﻿using ABCSharedLibrary.Models.Requests.School;
+using ABCSharedLibrary.Wrappers;
+using Application.Pipelines;
 using MediatR;
 
 namespace Application.Features.Schools.Commands

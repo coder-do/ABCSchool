@@ -1,0 +1,36 @@
+﻿@using System.Net.Http
+@using System.Net.Http.Json
+@using Microsoft.AspNetCore.Components.Forms
+@using Microsoft.AspNetCore.Components.Routing
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
+@using Microsoft.AspNetCore.Components.WebAssembly.Http
+@using Microsoft.JSInterop
+@using ABCSchoolPortal
+@using ABCSchoolPortal.Layout
+@using MudBlazor
+
+@using Microsoft.AspNetCore.Components.Authorization
+@using Microsoft.AspNetCore.Authorization
+@using ABCSchoolPortal.Pages.Auth
+@using global::App.Infra.Services.Auth
+@using global::App.Infra.Services.Identity
+@using ABCSchoolPortal.Components
+@using global::App.Infra.Services.Interceptors
+@using global::App.Infra.Services.Schools
+@using global::App.Infra.Services.Tenancy 
+
+
+@attribute [Authorize]
+
+@inject ApplicationStateProvider _applicationStateProvider
+@inject NavigationManager _navigation
+@inject ITokenService _tokenService
+@inject IUserService _userService
+@inject ITenantService _tenantService
+@inject IRoleService _roleService
+@inject ISchoolService _schoolService
+@inject IHttpRefreshTokenInterceptorService _interceptor
+
+@inject ISnackbar _snackbar
+@inject IDialogService _dialogService;

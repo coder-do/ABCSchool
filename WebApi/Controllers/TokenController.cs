@@ -1,10 +1,9 @@
-﻿using Application.Features.Identity.Tokens;
+﻿using ABCSharedLibrary.Models.Requests.Token;
 using Application.Features.Identity.Tokens.Queries;
 using Infra.Constants;
 using Infra.Identity.Auth;
 using Infra.OpenApi;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
 

@@ -1,4 +1,5 @@
-﻿using Application.Wrappers;
+﻿using ABCSharedLibrary.Models.Responses.User;
+using ABCSharedLibrary.Wrappers;
 using MediatR;
 
 namespace Application.Features.Identity.Users.Queries

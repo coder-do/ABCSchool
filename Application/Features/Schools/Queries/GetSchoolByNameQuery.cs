@@ -1,11 +1,7 @@
-﻿using Application.Wrappers;
+﻿using ABCSharedLibrary.Models.Responses.School;
+using ABCSharedLibrary.Wrappers;
 using Mapster;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Schools.Queries
 {

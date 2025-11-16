@@ -1,7 +1,9 @@
-﻿using Application.Exceptions;
+﻿using ABCSharedLibrary.Constants;
+using ABCSharedLibrary.Models.Requests.User;
+using ABCSharedLibrary.Models.Responses.User;
+using Application.Exceptions;
 using Application.Features.Identity.Users;
 using Finbuckle.MultiTenant.Abstractions;
-using Infra.Constants;
 using Infra.Contexts;
 using Infra.Identity.Models;
 using Infra.Tenancy;
@@ -126,7 +128,15 @@ namespace Infra.Identity
             };
 
             var result = await _userManager.CreateAsync(newUser, request.Password);
+
             if (!result.Succeeded)
+            {
+                throw new IdentityException(IdentityHelper.GetIdentityResultErrorDescriptions(result));
+            }
+
+            var roleResult = await _userManager.AddToRoleAsync(newUser, RoleConstants.Basic);
+
+            if (!roleResult.Succeeded)
             {
                 throw new IdentityException(IdentityHelper.GetIdentityResultErrorDescriptions(result));
             }

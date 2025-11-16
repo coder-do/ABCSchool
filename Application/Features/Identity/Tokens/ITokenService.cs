@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ABCSharedLibrary.Models.Requests.Token;
+using ABCSharedLibrary.Models.Responses.Token;
 
 namespace Application.Features.Identity.Tokens
 {

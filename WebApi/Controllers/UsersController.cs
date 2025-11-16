@@ -5,6 +5,7 @@ using Infra.Identity.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Application.Features.Identity.Users.Queries;
 using Microsoft.AspNetCore.Authorization;
+using ABCSharedLibrary.Models.Requests.User;
 
 namespace WebApi.Controllers
 {
@@ -120,7 +121,7 @@ namespace WebApi.Controllers
             return NotFound(response);
         }
 
-        [HttpGet("change-password")]
+        [HttpPut("change-password")]
         [AllowAnonymous]
         public async Task<IActionResult> ChangeUserPasswordAsync([FromBody] ChangePasswordRequest request)
         {

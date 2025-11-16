@@ -1,4 +1,5 @@
-﻿using Application.Features.Tenancy;
+﻿using ABCSharedLibrary.Models.Requests.Tenancy;
+using Application.Features.Tenancy;
 using Application.Features.Tenancy.Commands;
 using Application.Features.Tenancy.Queries;
 using Infra.Constants;
@@ -24,7 +25,7 @@ namespace WebApi.Controllers
             return BadRequest(response);
         }
 
-        [HttpPost("{tenantId}/activate")]
+        [HttpPut("{tenantId}/activate")]
         [ShouldHavePermission(SchoolAction.Update, SchoolFeature.Tenants)]
         public async Task<IActionResult> ActivateTenantAsync(string tenantId)
         {

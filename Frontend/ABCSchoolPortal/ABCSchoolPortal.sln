@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34902.65
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ABCSchoolPortal", "ABCSchoolPortal.csproj", "{EC12B6F1-1350-4FE9-B22A-0390F4CCC862}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5CD90E2A-F551-4CFB-B190-178C9D452D01}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "App.Infra", "..\App.Infra\App.Infra.csproj", "{18A7180D-6E06-4F4E-A2E1-04936F56E6A6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EC12B6F1-1350-4FE9-B22A-0390F4CCC862}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC12B6F1-1350-4FE9-B22A-0390F4CCC862}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC12B6F1-1350-4FE9-B22A-0390F4CCC862}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC12B6F1-1350-4FE9-B22A-0390F4CCC862}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18A7180D-6E06-4F4E-A2E1-04936F56E6A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18A7180D-6E06-4F4E-A2E1-04936F56E6A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18A7180D-6E06-4F4E-A2E1-04936F56E6A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18A7180D-6E06-4F4E-A2E1-04936F56E6A6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EC12B6F1-1350-4FE9-B22A-0390F4CCC862} = {5CD90E2A-F551-4CFB-B190-178C9D452D01}
+		{18A7180D-6E06-4F4E-A2E1-04936F56E6A6} = {5CD90E2A-F551-4CFB-B190-178C9D452D01}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3CBA9F1E-5781-4981-8898-AE094F95E2F7}
+	EndGlobalSection
+EndGlobal

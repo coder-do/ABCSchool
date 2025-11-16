@@ -11,6 +11,16 @@ namespace WebApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddCors(opt =>
+            {
+                opt.AddPolicy("ABCSchool", p =>
+                {
+                    p.WithOrigins("https://localhost:7261")
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
+
             builder.Services.AddControllers();
 
             builder.Services.AddInfraServices(builder.Configuration);
@@ -26,6 +36,8 @@ namespace WebApi
             await app.Services.AddDatabaseInitializerAsync();
 
             app.UseHttpsRedirection();
+
+            app.UseCors("ABCSchool");
 
             app.UseInfra();
 
